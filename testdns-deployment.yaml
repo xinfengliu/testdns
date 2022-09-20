@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testdns
+spec:
+  selector:
+    matchLabels:
+      app: testdns
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: testdns
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: testdns
+        args: ["ng"]
+        #env:
+        #- name: GODEBUG
+        #  value: netdns=cgo+1
+        image: testdns:golang
+        #image: testdns:java
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          readOnlyRootFilesystem: true
